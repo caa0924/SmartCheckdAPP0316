@@ -1,5 +1,7 @@
 package com.mhimine.jdk.coordapp.Activity;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.mhimine.jdk.coordapp.Fragment.CheckManageFragment;
 import com.mhimine.jdk.coordapp.Fragment.Fragment1;
 
 import com.mhimine.jdk.coordapp.Fragment.LoginDailogFragment;
+import com.mhimine.jdk.coordapp.Fragment.OutOfDateFragment;
 import com.mhimine.jdk.coordapp.Fragment.WatchAndShakeFragment;
 import com.mhimine.jdk.coordapp.Fragment.WorkAlertFragment;
 import com.mhimine.jdk.coordapp.Model.Activation;
@@ -34,7 +37,10 @@ import butterknife.ButterKnife;
  * Created by JDK on 2016/8/28.
  */
 public class MainActivity extends BaseActivity implements WatchAndShakeFragment.watchAndShakeFragmentListener, AboutProjectFragment.aboutProjectDrawerIconListener,
-        AuthorityManagementFragment.authorityManagementFragmentListener, Fragment1.fragment1Listener, LoginDailogFragment.MyListener,WorkAlertFragment.workAlertFragmentListener,CheckManageFragment.checkManageFragmentListener{
+        AuthorityManagementFragment.authorityManagementFragmentListener, Fragment1.fragment1Listener,
+        LoginDailogFragment.MyListener,WorkAlertFragment.workAlertFragmentListener,
+        CheckManageFragment.checkManageFragmentListener,WorkAlertFragment.FragmentListener
+,OutOfDateFragment.BackOutOfDateListenter{
     @Bind(R.id.drawer)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.navigation_view)
@@ -43,6 +49,7 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
     private boolean isOpen;
     private WatchAndShakeFragment watchAndShakeFragment;
     private LoginDailogFragment loginDailogFragment;
+    private OutOfDateFragment outOfDateFragment;
     private CheckManageFragment checkManageFragment;
     private WorkAlertFragment workAlertFragment;
     private Fragment1 fragment1;
@@ -312,5 +319,25 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
             //LEFT和RIGHT指的是现存DrawerLayout的方向
             mDrawerLayout.openDrawer(Gravity.LEFT);
         }
+    }
+
+    @Override
+    public void sendInfo(String info) {
+        if (info=="outofdate"){
+            if (outOfDateFragment == null) {
+                outOfDateFragment = OutOfDateFragment.newInstance();
+            }
+
+            switchFragment(currentFragment, outOfDateFragment);
+        }
+    }
+
+    @Override
+    public void BackOutOfDate() {
+        if (workAlertFragment == null) {
+            workAlertFragment = WorkAlertFragment.newInstance(this);
+        }
+
+        switchFragment(currentFragment, workAlertFragment);
     }
 }

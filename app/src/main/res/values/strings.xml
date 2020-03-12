@@ -87,4 +87,5 @@
     <string name="check_notes">备注：</string>
     <string name="chooseVoice">选择</string>
     <string name="todo">TODO</string>
+    <string name="outOfDateValue">过期未保</string>
 </resources>

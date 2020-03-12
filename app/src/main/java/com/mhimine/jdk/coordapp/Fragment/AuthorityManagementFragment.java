@@ -25,6 +25,8 @@ import butterknife.ButterKnife;
 public class AuthorityManagementFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.drawerIcon)
     TextView drawerIcon_tv;
+    @Bind(R.id.myCollection_tv)
+    TextView myCollection_tv;
     private View v;
 
     private static AuthorityManagementFragment paramSetFragment;
@@ -46,6 +48,7 @@ public class AuthorityManagementFragment extends Fragment implements View.OnClic
         ButterKnife.bind(this, v);
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "iconfont.ttf");
         drawerIcon_tv.setTypeface(typeface);
+        myCollection_tv.setTypeface(typeface);
         drawerIcon_tv.setOnClickListener(this);
 
         return v;

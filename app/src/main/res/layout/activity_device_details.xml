@@ -119,13 +119,13 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="出厂编号："
+                android:text="负责人："
                 android:textColor="@color/black"
                 android:textSize="15dp" />
             />
 
             <TextView
-                android:id="@+id/number"
+                android:id="@+id/user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -190,37 +190,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/check_notes"
+        android:layout_weight="1"
+        android:textSize="18sp" />
 
-                        <TextView
-                            android:id="@+id/textView19"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp"
-                            android:text="@string/check_notes"
-                            android:textSize="18sp" />
+    <EditText
+        android:id="@+id/txt_check_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:textSize="16sp"
+        android:textColor="@color/black"></EditText>
+</LinearLayout>
 
-                        <EditText
-                            android:id="@+id/txt_check_note"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
 
-                            android:layout_marginStart="8dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp"
-                            android:enabled="true"
-                            android:gravity="top"
-                            android:inputType="textMultiLine"
-                            android:maxLines="10"
-                            android:minHeight="8dp"
-                            android:minLines="8"
-                            android:scrollbars="vertical"
-                            android:textColor="@color/black"></EditText>
 
                         <TextView
                             android:id="@+id/check_photo"
