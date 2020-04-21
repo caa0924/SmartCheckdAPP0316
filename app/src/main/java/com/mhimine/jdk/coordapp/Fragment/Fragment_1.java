@@ -1,7 +1,6 @@
 package com.mhimine.jdk.coordapp.Fragment;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -14,9 +13,11 @@ import android.widget.ListView;
 
 import com.mhimine.jdk.coordapp.Activity.DeviceDetailsActivity;
 import com.mhimine.jdk.coordapp.Adapter.DeviceCheckAdapter;
-import com.mhimine.jdk.coordapp.ObjectClass.DeviceCheck;
+import com.mhimine.jdk.coordapp.Model.ModelClass.DeviceCheck;
 import com.mhimine.jdk.coordapp.R;
 import com.mhimine.jdk.coordapp.Utils.Utils;
+
+import net.sourceforge.jtds.jdbc.DateTime;
 
 import org.ksoap2.serialization.SoapObject;
 
@@ -101,8 +102,9 @@ public class Fragment_1 extends Fragment {
     private void initUser(List<Map<String, Object>> list) {
         for (int i = 0; i < list.size(); i++) {
             Map<String, Object> l = list.get(i);
-            DeviceCheck user = new DeviceCheck(R.mipmap.equipment, l.get("device_number").toString(), l.get("check_time").toString(), l.get("check_number").toString());
-            userList.add(user);
+          //  DeviceCheck user = new DeviceCheck(R.mipmap.equipment, (String) l.get("device_number"), (DateTime)l.get("check_time"), l.get("check_cycle").toString());
+
+           // userList.add(user);
         }
 
     }

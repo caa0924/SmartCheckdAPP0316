@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.mhimine.jdk.coordapp.ObjectClass.DeviceCheck;
+import com.mhimine.jdk.coordapp.Model.ModelClass.DeviceCheck;
 import com.mhimine.jdk.coordapp.R;
 import java.util.List;
 
@@ -25,11 +25,11 @@ public class DeviceCheckAdapter extends ArrayAdapter<DeviceCheck> {
     View view= LayoutInflater.from(getContext()).inflate(resourceId,parant,false);
     ImageView equipImage=(ImageView)view.findViewById(R.id.equip);
     TextView deviceNumber=(TextView)view.findViewById(R.id.device_number);
-    TextView checkNumber=(TextView)view.findViewById(R.id.check_number);
+    TextView checkUser=(TextView)view.findViewById(R.id.check_number);
     TextView checkTime=(TextView)view.findViewById(R.id.check_time);
     equipImage.setImageResource(device.getId());
     deviceNumber.setText(device.getDevice_number());
-    checkNumber.setText(device.getCheck_number());
+    checkUser.setText(device.getCheck_cycle());
     checkTime.setText(device.getCheck_time());
     return view;
 

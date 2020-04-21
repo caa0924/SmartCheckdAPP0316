@@ -22,8 +22,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class Fragment1 extends android.support.v4.app.Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
-    private static Fragment1 fragment1;
+public class CheckEquipFragment extends android.support.v4.app.Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
+    private static CheckEquipFragment fragment1;
     @Bind(R.id.viewpager)
     ViewPager viewpager;
     @Bind(R.id.tablayout)
@@ -42,29 +42,26 @@ public class Fragment1 extends android.support.v4.app.Fragment implements View.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.activity_fragment1, container, false);
-
-        Fragment_1 fragment_1 = new Fragment_1();
-        Fragment_2 fragment_2 = new Fragment_2();
-        Fragment_3 fragment_3 = new Fragment_3();
-        titleList.add("设备参数预警");
-        titleList.add("报警信息处理");
-        titleList.add("超时工作预警");
+        v = inflater.inflate(R.layout.fragment_check_equip, container, false);
+        SingleFragment fragment_1 = new SingleFragment();
+        MultiFragment fragment_2 = new MultiFragment();
+        titleList.add("未巡检设备");
+        titleList.add("已巡检设备");
         ButterKnife.bind(this, v);
         fragmentlist.add(fragment_1);
         fragmentlist.add(fragment_2);
-        fragmentlist.add(fragment_3);
 
         initWidgets();
         return v;
     }
 
+
     private void initWidgets() {
         adapter = new MyFragmentPagerAdapter(getChildFragmentManager());
-       // getFragmentManager();
+        // getFragmentManager();
         viewpager.setAdapter(adapter);
         viewpager.addOnPageChangeListener(this);
-        viewpager.setOffscreenPageLimit(3);
+        viewpager.setOffscreenPageLimit(0);
 
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewpager);
@@ -94,10 +91,6 @@ public class Fragment1 extends android.support.v4.app.Fragment implements View.O
                 watch_tv.setSelected(false);
                 viewpager.setCurrentItem(1);
                 break;
-            case 2:
-                watch_tv.setSelected(false);
-                viewpager.setCurrentItem(2);
-                break;
         }
     }
 
@@ -106,20 +99,20 @@ public class Fragment1 extends android.support.v4.app.Fragment implements View.O
 
     }
 
-    public interface fragment1Listener {
-        public void fragment1();
+    public interface fragmentCheckEquipListener {
+        public void fragmentCheckEquip();
     }
 
     @Override
     public void onClick(View v) {
-        if (getActivity() instanceof fragment1Listener) {
-            ((fragment1Listener) getActivity()).fragment1();
+        if (getActivity() instanceof fragmentCheckEquipListener) {
+            ((fragmentCheckEquipListener) getActivity()).fragmentCheckEquip();
         }
 
     }
-    public static Fragment1 newInstance() {
+    public static CheckEquipFragment newInstance() {
         if (fragment1 == null) {
-            fragment1 = new Fragment1();
+            fragment1 = new CheckEquipFragment();
         }
         return fragment1;
     }
@@ -132,6 +125,7 @@ public class Fragment1 extends android.support.v4.app.Fragment implements View.O
 
         @Override
         public Fragment getItem(int position) {
+
             return fragmentlist.get(position);
         }
 

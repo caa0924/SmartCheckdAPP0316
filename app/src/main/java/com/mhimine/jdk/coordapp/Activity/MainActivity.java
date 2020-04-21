@@ -1,8 +1,10 @@
 package com.mhimine.jdk.coordapp.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -16,6 +18,7 @@ import android.view.Window;
 
 import com.mhimine.jdk.coordapp.Fragment.AboutProjectFragment;
 import com.mhimine.jdk.coordapp.Fragment.AuthorityManagementFragment;
+import com.mhimine.jdk.coordapp.Fragment.CheckEquipFragment;
 import com.mhimine.jdk.coordapp.Fragment.CheckManageFragment;
 import com.mhimine.jdk.coordapp.Fragment.Fragment1;
 
@@ -38,9 +41,9 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends BaseActivity implements WatchAndShakeFragment.watchAndShakeFragmentListener, AboutProjectFragment.aboutProjectDrawerIconListener,
         AuthorityManagementFragment.authorityManagementFragmentListener, Fragment1.fragment1Listener,
-        LoginDailogFragment.MyListener,WorkAlertFragment.workAlertFragmentListener,
-        CheckManageFragment.checkManageFragmentListener,WorkAlertFragment.FragmentListener
-,OutOfDateFragment.BackOutOfDateListenter{
+        LoginDailogFragment.MyListener, WorkAlertFragment.workAlertFragmentListener,
+        CheckManageFragment.checkManageFragmentListener, WorkAlertFragment.FragmentListener
+        , OutOfDateFragment.BackOutOfDateListenter,CheckEquipFragment.fragmentCheckEquipListener {
     @Bind(R.id.drawer)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.navigation_view)
@@ -52,6 +55,7 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
     private OutOfDateFragment outOfDateFragment;
     private CheckManageFragment checkManageFragment;
     private WorkAlertFragment workAlertFragment;
+    private CheckEquipFragment checkEquipFragment;
     private Fragment1 fragment1;
     private AboutProjectFragment aboutProjectFragment;
     private AuthorityManagementFragment authorityManagementFragment;
@@ -61,6 +65,7 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
     private Activation activation;
     private String position;
     SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,31 +120,42 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
 //        } else {
 
         // 2）读取数据：
+//        sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
+//        try {
+//            isLogin = sharedPreferences.getBoolean("isLogin", true);
+//        } catch (Exception e) {
+//            isLogin=true;
+//            e.printStackTrace();
+//        }
+//
+//
+//        if (isLogin) {
+        Intent i = getIntent();
+        Bundle bundle = i.getBundleExtra("LoginInfo");
+        String username = bundle.getString("username");
         sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
-        try {
-            isLogin = sharedPreferences.getBoolean("isLogin", true);
-        } catch (Exception e) {
-            isLogin=true;
-            e.printStackTrace();
-        }
 
-
-        if (isLogin) {
-            //步骤2： 实例化SharedPreferences.Editor对象
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            //步骤3：将获取过来的值放入文件
-            editor.putBoolean("isLogin", false);
-            //步骤4：提交
-            editor.apply();
-
-            if (loginDailogFragment == null) {
-                loginDailogFragment = LoginDailogFragment.newInstance();
-            }
-            addFragment(R.id.activity_main, loginDailogFragment);
-            currentFragment = loginDailogFragment;
-        } else {
-            if (watchAndShakeFragment == null) {
-                watchAndShakeFragment = WatchAndShakeFragment.newInstance();
+        String username1 = sharedPreferences.getString("username", "");
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username",username1);
+        editor.apply();
+//        try {
+//            isLogin = sharedPreferences.getBoolean("isLogin", true);
+//            //步骤2： 实例化SharedPreferences.Editor对象
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            //步骤3：将获取过来的值放入文件
+//            editor.putString("username",username);
+//            //步骤4：提交
+//            editor.apply();
+//
+//            if (loginDailogFragment == null) {
+//                loginDailogFragment = LoginDailogFragment.newInstance();
+//            }
+//            addFragment(R.id.activity_main, loginDailogFragment);
+//            currentFragment = loginDailogFragment;
+//        } else {
+        if (watchAndShakeFragment == null) {
+            watchAndShakeFragment = WatchAndShakeFragment.newInstance();
             }
 
             addFragment(R.id.activity_main, watchAndShakeFragment);
@@ -147,7 +163,7 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
         }
 
 //        }
-    }
+
 
     public void initNavigationViewItemSelected() {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -188,13 +204,20 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
                     case R.id.navigation_cancel:
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         //步骤3：将获取过来的值放入文件
-                        editor.putBoolean("isLogin", true);
+                        editor.putBoolean("isLogin", false);
+                        editor.putString("username", null);
+
                         //步骤4：提交
                         editor.apply();
-                        if (loginDailogFragment == null) {
-                            loginDailogFragment = LoginDailogFragment.newInstance();
-                        }
-                        switchFragment(currentFragment, loginDailogFragment);
+                        Intent i=new Intent(MainActivity.this,LoginActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        //MainActivity.this.finish();
+                        startActivity(i);
+
+//                        if (loginDailogFragment == null) {
+//                            loginDailogFragment = LoginDailogFragment.newInstance();
+//                        }
+//                        switchFragment(currentFragment, loginDailogFragment);
                         break;
 
                 }
@@ -224,8 +247,9 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
             mDrawerLayout.openDrawer(Gravity.LEFT);
         }
     }
+
     @Override
-    public void workAlertFragment(){
+    public void workAlertFragment() {
         if (!isOpen) {
             //LEFT和RIGHT指的是现存DrawerLayout的方向
             mDrawerLayout.openDrawer(Gravity.LEFT);
@@ -301,16 +325,21 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
     }
 
     @Override
-    public void sendContent(String info) {
+    public void sendContent(String info, String username) {
         if (info != null && !"".equals(info)) {
-            if (Integer.parseInt(info) == 1) {
-                if (watchAndShakeFragment == null) {
-                    watchAndShakeFragment = WatchAndShakeFragment.newInstance();
-                }
-                switchFragment(currentFragment, watchAndShakeFragment);
+            if (Integer.parseInt(info) == 2) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                //步骤3：将获取过来的值放入文件
+                editor.putString("username", username);
+                editor.apply();
+//                if (watchAndShakeFragment == null) {
+//                    watchAndShakeFragment = WatchAndShakeFragment.newInstance();
+//                }
+//                switchFragment(currentFragment, watchAndShakeFragment);
 
             }
         }
+
     }
 
     @Override
@@ -323,7 +352,7 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
 
     @Override
     public void sendInfo(String info) {
-        if (info=="outofdate"){
+        if (info == "outofdate") {
             if (outOfDateFragment == null) {
                 outOfDateFragment = OutOfDateFragment.newInstance();
             }
@@ -339,5 +368,19 @@ public class MainActivity extends BaseActivity implements WatchAndShakeFragment.
         }
 
         switchFragment(currentFragment, workAlertFragment);
+    }
+
+    @Override
+    public void fragmentCheckEquip() {
+        if (!isOpen) {
+            //LEFT和RIGHT指的是现存DrawerLayout的方向
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+        }
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //super.onSaveInstanceState(outState);
+        //super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 }

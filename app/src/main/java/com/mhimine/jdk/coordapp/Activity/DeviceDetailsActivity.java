@@ -86,6 +86,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private Object DeviceDetailsActivity;
+    public SoapObject soapObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,38 +96,42 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_device_details);
         Bundle userList = getIntent().getExtras();
         message = userList.getString("equip_code");
-        Map<String, Object> params = new HashMap<>();
+        final Map<String, Object> params = new HashMap<>();
         params.put("equip_number", message);
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        SoapObject soapObject = Utils.callWS(namespace, methodName,
-                Url, params);
-        if (soapObject != null) {
 
-            String detail = soapObject.getProperty("SelectByDeviceIdResult").toString();
-            try {
-                //将JSON字符串转换为List的结构
-                List<Map<String, Object>> list = Utils.convertJSON2List(
-                        detail, "Result_List", new String[]{"equip_name",
-                                "equip_principal"});
-                TextView textView_device_name = (TextView) findViewById(R.id.device_name);
-                TextView textView_user = (TextView) findViewById(R.id.user);
-                textView_device_name.setText(list.get(0).get("equip_name").toString().trim());
-                textView_user.setText(list.get(0).get("equip_principal").toString().trim());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("This is null...");
-        }
+                 soapObject = Utils.callWS(namespace, methodName,
+                        Url, params);
+                if (soapObject != null) {
+
+                    String detail = soapObject.getProperty("SelectByDeviceIdResult").toString();
+                    try {
+                        //将JSON字符串转换为List的结构
+                        List<Map<String, Object>> list = Utils.convertJSON2List(
+                                detail, "Result_List", new String[]{"equip_name",
+                                        "equip_principal"});
+                        TextView textView_device_name = (TextView) findViewById(R.id.device_name);
+                        TextView textView_user = (TextView) findViewById(R.id.user);
+                        textView_device_name.setText(list.get(0).get("equip_name").toString().trim());
+                        textView_user.setText(list.get(0).get("equip_principal").toString().trim());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("This is null...");
+                }
+
+
+
         TextView tv_details = (TextView) this.findViewById(R.id.tv_details);
         tv_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("equip_code",message) ;
+                bundle.putString("equip_code", message);
                 Intent i = new Intent();
                 i.putExtras(bundle);
                 i.setClass(DeviceDetailsActivity.this, DeviceManagerDetailActivity.class);
@@ -292,7 +297,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
                 break;
             case 7:
                 if (resultCode == RESULT_OK) {
-                   // VideoView videoView = (VideoView) findViewById(R.id.videoView);
+                    // VideoView videoView = (VideoView) findViewById(R.id.videoView);
                     final Uri uri = data.getData();
 //                    videoView.setVideoURI(uri);//将选择的文件路径给播放器
 //                    videoView.setMediaController(new MediaController(this));
@@ -310,7 +315,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
                             if (mediaPlayer == null) {
                                 //开始创建MediaPlayer //pp为音频文件名
 //                                try {
-                                 //  mediaPlayer.setDataSource(DeviceDetailsActivity.this,uri);
+                                //  mediaPlayer.setDataSource(DeviceDetailsActivity.this,uri);
 //                                } catch (IOException e) {
 //                                    e.printStackTrace();
 //                                }
@@ -482,6 +487,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         //显示菜单，不要少了这一步
         popupMenu.show();
     }
+
     //点击录音弹出按钮框
     private void showVoiceMenu(final View view) {
         final PopupMenu popupMenu = new PopupMenu(this, view);
@@ -512,10 +518,10 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent();
         /* 开启Pictures画面Type设定为image */
         //intent.setType("image/*");
-         intent.setType("audio/*"); //选择音频
+        intent.setType("audio/*"); //选择音频
         //intent.setType("video/*"); //选择视频 （mp4 3gp 是android支持的视频格式）
 
-       // intent.setType("video/*;image/*");//同时选择视频和图片
+        // intent.setType("video/*;image/*");//同时选择视频和图片
 
         /* 使用Intent.ACTION_GET_CONTENT这个Action */
         intent.setAction(Intent.ACTION_GET_CONTENT);

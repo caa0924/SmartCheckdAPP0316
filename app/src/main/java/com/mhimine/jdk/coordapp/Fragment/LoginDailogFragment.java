@@ -66,6 +66,7 @@ public class LoginDailogFragment extends Fragment implements View.OnClickListene
     //    @Bind(R.id.btn_register)
 //    TextView txt_appName;
     public final static int TASK_LOOP_COMPLETE = 0;
+
     String name;
     String password;
     Map<String, Object> params = new HashMap<>();
@@ -113,21 +114,27 @@ public class LoginDailogFragment extends Fragment implements View.OnClickListene
                     Toast.makeText(getActivity(), "请输入用户名跟密码", Toast.LENGTH_SHORT).show();
                     messageListener.sendEmptyMessage(TASK_LOOP_COMPLETE);
                 } else {
-                    new Thread() {
+                    new Thread(new Runnable() {
+                        @Override
                         public void run() {
                             //sleep(5000);
                             int data = Login(name, password);
-                            if (data == 0) {
+                            if (data == 1) {
                                 Looper.prepare();
                                 Toast.makeText(getActivity(), "请输入正确的用户名跟密码", Toast.LENGTH_SHORT).show();
                                 messageListener.sendEmptyMessage(TASK_LOOP_COMPLETE);
                                 Looper.loop();
-                            } else {
-                                myListener.sendContent(String.valueOf(data));//将内容进行回传
+                            } else if (data==0) {
+                                Looper.prepare();
+                                Toast.makeText(getActivity(), "请连接网络", Toast.LENGTH_SHORT).show();
+                                messageListener.sendEmptyMessage(TASK_LOOP_COMPLETE);
+                                Looper.loop();
+                            }else{
+                                myListener.sendContent(String.valueOf(data),name);//将内容进行回传
                                 messageListener.sendEmptyMessage(TASK_LOOP_COMPLETE);
                             }
                         }
-                    }.start();
+                    }).start();
                 }
 
                 break;
@@ -173,7 +180,10 @@ public class LoginDailogFragment extends Fragment implements View.OnClickListene
                 Url, params);
         if (soapObject != null) {
             String detail = soapObject.getProperty("Check_UserResult").toString();
-            return Integer.parseInt(detail);
+            if (Integer.parseInt(detail)==0)
+                return 1;
+            else
+            return 2;
         } else {
             System.out.println("This is null...");
         }
@@ -181,7 +191,7 @@ public class LoginDailogFragment extends Fragment implements View.OnClickListene
     }
 
     public interface MyListener {
-        void sendContent(String info);
+        void sendContent(String info,String username);
     }
 
     @Override

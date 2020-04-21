@@ -1,4 +1,4 @@
-package com.mhimine.jdk.coordapp.ObjectClass;
+package com.mhimine.jdk.coordapp.Model.ModelClass;
 
 
 public class EquipmentInfo {

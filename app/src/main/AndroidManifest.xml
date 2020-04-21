@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mhimine.jdk.coordapp">
 
+
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 写入SD卡的权限：如果你希望保存相机拍照后的照片 -->
@@ -37,7 +39,15 @@
         <activity
             android:name=".Activity.RegisterActivity"
             android:theme="@style/AppNoTitle" />
-        <activity android:name=".Activity.LoginActivity" />
+        <activity
+            android:name=".Activity.LoginActivity"
+            android:theme="@style/AppNoTitle">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Activity.RecordActivity" />
         <activity android:name=".Activity.VideoActivity" />
         <activity
@@ -57,11 +67,6 @@
             android:configChanges="keyboardHidden|orientation|locale|keyboard">
 
             <!-- android:theme="@style/ImageTranslucentTheme"> -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <provider

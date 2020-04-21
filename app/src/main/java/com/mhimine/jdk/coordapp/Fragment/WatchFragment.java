@@ -61,6 +61,7 @@ public class WatchFragment extends Fragment {
     String SelectDoCheckNumber = "SelectDoCheckNumber";
     String SelectNoCheckNumber = "SelectNoCheckNumber";
 
+
     public static WatchFragment getInstance() {
         if (watchFragment == null) {
             watchFragment = new WatchFragment();
@@ -71,14 +72,11 @@ public class WatchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (v != null) {
-            ButterKnife.bind(this, v);
-            return v;
-        }
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
+//        if (v != null) {
+//            ButterKnife.bind(this, v);
+//            return v;
+//        }
+
         v = inflater.inflate(R.layout.paf_fragment_layout, container, false);
         ButterKnife.bind(this, v);
         InitVariable();
@@ -94,23 +92,34 @@ public class WatchFragment extends Fragment {
                 customScan();
             }
         });
-        SoapObject soapObjectSelectDoCheckNumber = Utils.callWS(namespace, SelectDoCheckNumber,
-                Url, null);
-        SoapObject soapObjectSelectNoCheckNumber = Utils.callWS(namespace, SelectNoCheckNumber,
-                Url, null);
-        if (soapObjectSelectDoCheckNumber != null && soapObjectSelectNoCheckNumber != null) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (android.os.Build.VERSION.SDK_INT > 9) {
+//                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//                    StrictMode.setThreadPolicy(policy);
+//                }
+//                SoapObject soapObjectSelectDoCheckNumber = Utils.callWS(namespace, SelectDoCheckNumber,
+//                        Url, null);
+//                SoapObject soapObjectSelectNoCheckNumber = Utils.callWS(namespace, SelectNoCheckNumber,
+//                        Url, null);
+//                if (soapObjectSelectDoCheckNumber != null && soapObjectSelectNoCheckNumber != null) {
+//
+//                    detailDo = soapObjectSelectDoCheckNumber.getProperty("SelectDoCheckNumberResult").toString();
+//                    detailNo = soapObjectSelectNoCheckNumber.getProperty("SelectNoCheckNumberResult").toString();
+//
+//
+//                } else {
+//                    System.out.println("This is null...");
+//                    detailDo = "0";
+//                    detailNo = "0";
+//                }
+//                doCheckText.setText(detailDo);
+//                noCheckText.setText(detailNo);
+//            }
+//        }).start();
 
-             detailDo = soapObjectSelectDoCheckNumber.getProperty("SelectDoCheckNumberResult").toString();
-             detailNo = soapObjectSelectNoCheckNumber.getProperty("SelectNoCheckNumberResult").toString();
 
-
-        } else {
-            System.out.println("This is null...");
-            noText = 0;
-            doText = 0;
-        }
-        doCheckText.setText(detailDo);
-        noCheckText.setText(detailNo);
         return v;
     }
 

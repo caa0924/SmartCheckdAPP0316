@@ -52,6 +52,7 @@ public class WatchAndShakeFragment extends Fragment implements View.OnClickListe
     private View v;
     private MyFragmentPagerAdapter adapter;
     private static WatchAndShakeFragment watchAndShakeFragment;
+    private WatchFragment watchFragment;
     public static WatchAndShakeFragment newInstance(){
         if( watchAndShakeFragment ==null){
             watchAndShakeFragment =new WatchAndShakeFragment();
@@ -81,26 +82,16 @@ public class WatchAndShakeFragment extends Fragment implements View.OnClickListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(v!=null){
-            ButterKnife.bind(this, v);
-            return v;
-        }
+//        if(v!=null){
+//            ButterKnife.bind(this, v);
+//            return v;
+//        }
          v=inflater.inflate(R.layout.fragment_watch_shake,container,false);
         ButterKnife.bind(this, v);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         actionBar= ((AppCompatActivity)getActivity()).getSupportActionBar();
         getActivity().getSupportFragmentManager().popBackStack();
         setHasOptionsMenu(true);
-
-//        Toolbar toolbar =  (Toolbar)v.findViewById(R.id.tool_bar);
-//        //inflater.setSupportActionBar(toolbar);
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-//
-//        ButterKnife.bind(this,v);
-//        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "iconfont.ttf");
-//        drawerIcon_tv.setTypeface(typeface);
-
-
         addFragment();
         initWidgets();
         return v;
@@ -117,11 +108,18 @@ public class WatchAndShakeFragment extends Fragment implements View.OnClickListe
         watch_tv.setTypeface(typeface);
         //初始化显示位置
         watch_tv.setSelected(true);
+        //给ViewPager设置适配器
+        adapter = new MyFragmentPagerAdapter(getChildFragmentManager());
+        // getFragmentManager();
+        view_pager.setAdapter(adapter);
         view_pager.setCurrentItem(1);
     }
 
     private void addFragment() {
-        fragmentlist.add(WatchFragment.getInstance());
+        if (watchFragment==null){
+            watchFragment=WatchFragment.getInstance();
+        }
+        fragmentlist.add(watchFragment);
     }
 
     @Override
@@ -192,7 +190,8 @@ public class WatchAndShakeFragment extends Fragment implements View.OnClickListe
 
         @Override
         public Fragment getItem(int position) {
-            return fragmentlist.get(position);
+           return fragmentlist.get(position);
+
         }
 
         @Override
